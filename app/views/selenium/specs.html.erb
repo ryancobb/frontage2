@@ -1,0 +1,17 @@
+<%= form_tag("/selenium/run") do %>
+	<%= select_tag "browser", options_for_select([ "chrome", "firefox" ]) %>
+	<%= select_tag "environment", options_for_select([ "sand", "qa", "int", "prod"]) %>
+
+	<% @specs.keys.each do |feature| %>
+		<div>
+			<h1><%= feature %></h1>
+			<% @specs[feature].keys.each do |spec| %>
+				<%= check_box_tag 'specs[]', @specs[feature][spec]["command"] %>
+				<div><%= spec %></div>
+				<div><%= @specs[feature][spec]["description"] %></div>
+			<% end %>
+		</div>
+	<% end %>
+	<%= submit_tag %>
+	
+<% end %>
