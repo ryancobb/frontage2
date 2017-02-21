@@ -1,20 +1,21 @@
 class SeleniumController < ApplicationController
 
 	def specs
-		response = HTTParty.get("http://localhost:3000/selenium/specs")
+		response = HTTParty.get("#{ALLEYWAY_CONFIG["url"]}/selenium/specs")
 		@specs = JSON.parse(response.body)
 	end
 
 	def run
 		body = {
 			:selenium => {
+				:job_guid => SecureRandom.uuid,
 				:spec => params[:specs],
 				:environment => params[:environment],
 				:browser => params[:browser]
 			}
 		}
 
-		response = HTTParty.post("http://localhost:3000/selenium/run", 
+		response = HTTParty.post("#{ALLEYWAY_CONFIG["url"]}/selenium/run", 
 			:body => body.to_json,
 			:headers => { 'Content-Type' => 'application/json' })
 
